@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chocolate Ice Cream Recipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Sitka+Text&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Lobster', cursive; 
+      color: #3e2723;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background-image: url("9.jpg");
+      background-size: cover; 
+      background-position: center; 
+      background-attachment: fixed; 
+    }
+
+    .recipe-card {
+      background-color: rgba(215, 204, 200, 0.9); 
+      border: 2px solid #5d4037;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .recipe-card:hover {
+      transform: scale(1.02);
+    }
+
+    .recipe-image {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin: 10px 0;
+      color: #3e2723;
+    }
+
+    button {
+      background-color: #5d4037;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3e2723;
+    }
+
+    .prep-info {
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    .ingredients, .steps {
+      display: none;
+      margin: 15px 0;
+      text-align: left;
+      font-family: 'Sitka Text', serif; 
+    }
+
+    .ingredient, .step {
+      margin: 10px 0;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+
+    .ingredient img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .ingredient:hover, .step:hover {
+      background-color: #e8cfc4;
+    }
+
+    .progress-bar {
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      height: 10px;
+      width: 100%;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress {
+      background-color: #3e2723;
+      height: 100%;
+      width: 0;
+      transition: width 0.5s ease;
+    }
+
+    .timer {
+      font-size: 1.5em;
+      margin-top: 10px;
+      color: #5d4037;
+      display: none; 
+    }
+
+    .button-container {
+      display: none; 
+      justify-content: center;
+      margin-top: 20px;
+      flex-direction: column; 
+      align-items: center; 
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5em;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="recipe-card">
+    <h1>Chocolate Ice Cream</h1>
+    <img src="5213.jpg_wh860.jpg" alt="Chocolate Ice Cream" class="recipe-image">
+
+    <div class="prep-info">
+      <p>Preparation Time: 15 minutes</p>
+      <p>Servings: 6</p>
+    </div>
+
+    
+    <button class="toggle-ingredients">Show Ingredients</button>
+    <div class="ingredients">
+      <h2>Ingredients</h2>
+      <div class="ingredient"><img src="1.jpg" alt="Heavy Cream">2 cups heavy cream</div>
+      <div class="ingredient"><img src="2.jpg" alt="Whole Milk">1 cup whole milk</div>
+      <div class="ingredient"><img src="3.jpg" alt="Sugar">3/4 cup sugar</div>
+      <div class="ingredient"><img src="4.jpg" alt="Cocoa Powder">1 cup unsweetened cocoa powder</div>
+      <div class="ingredient"><img src="5.jpg" alt="Vanilla Extract">1 tsp vanilla extract</div>
+      <div class="ingredient"><img src="6.jpg" alt="Salt">A pinch of salt</div>
+    </div>
+
+   
+    <button class="toggle-steps">Show Steps</button>
+    <div class="steps">
+      <h2>Step-by-Step Instructions</h2>
+      <div class="step">Step 1:  In a bowl, mix the cocoa powder and sugar.</div>
+      <div class="step">Step 2:  Add the milk and whisk until smooth.</div>
+      <div class="step">Step 3:  Stir in the heavy cream, vanilla extract, and salt.</div>
+      <div class="step">Step 4:  Pour the mixture into an ice cream maker and churn according to the manufacturer's instructions.</div>
+      <div class="step">Step 5:  Transfer to a container and freeze for at least 4 hours.</div>
+      <div class="step">Step 6:  Scoop and serve!</div>
+    </div>
+
+   
+    <div class="timer">15:00</div>
+    <div class="progress-bar" style="display: none;">
+      <div class="progress"></div>
+    </div>
+
+    
+    <div class="button-container">
+      <button class="start-cooking">Start Cooking</button>
+      <button class="pause-timer" style="display: none;">Pause</button>
+      <button class="print-recipe">Print Recipe</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleIngredientsBtn = document.querySelector('.toggle-ingredients');
+      const ingredients = document.querySelector('.ingredients');
+      const toggleStepsBtn = document.querySelector('.toggle-steps');
+      const steps = document.querySelector('.steps');
+      const startCookingBtn = document.querySelector('.start-cooking');
+      const pauseTimerBtn = document.querySelector('.pause-timer');
+      const progressBar = document.querySelector('.progress');
+      const timerDisplay = document.querySelector('.timer');
+      const printRecipeBtn = document.querySelector('.print-recipe');
+      const progressBarContainer = document.querySelector('.progress-bar');
+      const buttonContainer = document.querySelector('.button-container');
+      let timer;
+      let timeRemaining = 15 * 60; 
+      let isPaused = false;
+
+     
+      function startTimer() {
+        progressBarContainer.style.display = 'block'; 
+        timerDisplay.style.display = 'block'; 
+        timer = setInterval(() => {
+          if (timeRemaining > 0 && !isPaused) {
+            timeRemaining--;
+            updateTimerDisplay();
+            updateProgressBar();
+          } else if (timeRemaining === 0) {
+            clearInterval(timer);
+            alert('Time is up! Your preparation is complete.');
+          }
+        }, 1000);
+      }
+
+      
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+      }
+
+      
+      function updateProgressBar() {
+        const progressPercentage = ((15 * 60 - timeRemaining) / (15 * 60)) * 100;
+        progress.style.width = progressPercentage + '%';
+      }
+
+      
+      toggleIngredientsBtn.addEventListener('click', () => {
+        ingredients.style.display = ingredients.style.display === 'block' ? 'none' : 'block';
+        toggleIngredientsBtn.textContent = ingredients.style.display === 'block' ? 'Hide Ingredients' : 'Show Ingredients';
+        toggleVisibilityOfButtons();
+      });
+
+      
+      toggleStepsBtn.addEventListener('click', () => {
+        steps.style.display = steps.style.display === 'block' ? 'none' : 'block';
+        toggleStepsBtn.textContent = steps.style.display === 'block' ? 'Hide Steps' : 'Show Steps';
+        toggleVisibilityOfButtons();
+      });
+
+      
+      function toggleVisibilityOfButtons() {
+        if (ingredients.style.display === 'block' && steps.style.display === 'block') {
+          buttonContainer.style.display = 'flex'; 
+        } else {
+          buttonContainer.style.display = 'none'; 
+        }
+      }
+
+     
+      startCookingBtn.addEventListener('click', () => {
+        startTimer();
+        startCookingBtn.style.display = 'none';
+        pauseTimerBtn.style.display = 'inline-block';
+      });
+
+      
+      pauseTimerBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        pauseTimerBtn.textContent = isPaused ? 'Resume' : 'Pause';
+      });
+
+      
+      printRecipeBtn.addEventListener('click', () => {
+        window.print();
+      });
+    });
+  </script>
+</body>
+</html>
